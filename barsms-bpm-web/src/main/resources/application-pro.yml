@@ -1,0 +1,52 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/bpm
+
+spring:
+  application:
+    name: barsms-bpm-service
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD}
+    database: ${REDIS_DATABASE:0}
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: ${DB_URL}
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      initialSize: 5
+      minIdle: 5
+      maxActive: 30
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      keepAlive: true
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,slf4j,config
+      useGlobalDataSourceStat: true
+      stat:
+        log-slow-sql: true
+        merge-sql: true
+        slow-sql-millis: 10000
+
+mybatis-plus:
+  mapper-locations: classpath*:/sqlmapper/*.xml
+  type-aliases-package: com.cpic.barsms.bpm.infra.model.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

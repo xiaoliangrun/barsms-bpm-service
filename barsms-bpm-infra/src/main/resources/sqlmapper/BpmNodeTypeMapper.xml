@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeTypeMapper">
 
+    <resultMap id="BpmNodeTypeResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmNodeType">
+        <id column="ID" property="id"/>
+        <result column="CATEGORY" property="category"/>
+        <result column="TYPE_NAME" property="typeName"/>
+        <result column="TYPE_KEY" property="typeKey"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+        <result column="DELETE_FLAG" property="deleteFlag"/>
+    </resultMap>
+
     <select id="selectIdByCategoryAndName" resultType="java.lang.Long">
         SELECT id
         FROM bpm_node_type

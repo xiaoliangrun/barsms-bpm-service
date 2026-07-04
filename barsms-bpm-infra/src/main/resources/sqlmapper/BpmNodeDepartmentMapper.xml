@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeDepartmentMapper">
 
+    <resultMap id="BpmNodeDepartmentResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmNodeDepartment">
+        <result column="INT_JOB_DEPT_CD" property="intJobDeptCd"/>
+        <result column="INT_JOB_DEPT_NAME" property="intJobDeptName"/>
+        <result column="ORG_LEVEL" property="orgLevel"/>
+        <result column="INT_JOB_BRANCH" property="intJobBranch"/>
+        <result column="INT_JOB_CEN_BRANCH" property="intJobCenBranch"/>
+        <result column="INT_JOB_BUSI_BRANCH" property="intJobBusiBranch"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+        <result column="DELETE_FLAG" property="deleteFlag"/>
+    </resultMap>
+
     <select id="selectDeptCode" resultType="java.lang.String">
         SELECT int_job_dept_cd
         FROM bpm_node_department

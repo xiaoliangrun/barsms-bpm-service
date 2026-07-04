@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmBatchExecLogMapper">
 
+    <resultMap id="BpmBatchExecLogResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmBatchExecLog">
+        <id column="ID" property="id"/>
+        <result column="BATCH_DATE" property="batchDate"/>
+        <result column="VERSION_NAME" property="versionName"/>
+        <result column="NODE_CODE" property="nodeCode"/>
+        <result column="STATUS" property="status"/>
+        <result column="CURRENT_STEP" property="currentStep"/>
+        <result column="ERROR_STEP" property="errorStep"/>
+        <result column="ERROR_MESSAGE" property="errorMessage"/>
+        <result column="INSTANCE_COUNT" property="instanceCount"/>
+        <result column="OFFICE_COUNT" property="officeCount"/>
+        <result column="DELIVERABLE_COUNT" property="deliverableCount"/>
+        <result column="START_TIME" property="startTime"/>
+        <result column="END_TIME" property="endTime"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+        <result column="DELETE_FLAG" property="deleteFlag"/>
+    </resultMap>
+
     <select id="existsSuccess" resultType="boolean">
         SELECT COUNT(*) &gt; 0 FROM bpm_batch_exec_log
         WHERE batch_date = #{batchDate}

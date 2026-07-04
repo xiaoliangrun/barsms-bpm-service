@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmDeliverableMapper">
 
+    <resultMap id="BpmDeliverableResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmDeliverable">
+        <id column="ID" property="id"/>
+        <result column="NODE_INSTANCE_ID" property="nodeInstanceId"/>
+        <result column="DELIVERABLE_NAME" property="deliverableName"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+        <result column="DELETE_FLAG" property="deleteFlag"/>
+    </resultMap>
+
     <insert id="batchInsert">
         INSERT INTO BPM_DELIVERABLE (
             node_instance_id, deliverable_name,

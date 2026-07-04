@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmSceneMapper">
 
+    <resultMap id="BpmSceneResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmScene">
+        <id column="ID" property="id"/>
+        <result column="SCENE_KEY" property="sceneKey"/>
+        <result column="SCENE_NAME" property="sceneName"/>
+        <result column="SCENE_TYPE" property="sceneType"/>
+        <result column="STATUS" property="status"/>
+        <result column="T_DATE" property="tDate"/>
+        <result column="START_DATE" property="startDate"/>
+        <result column="TARGET_DATE" property="targetDate"/>
+        <result column="OWNER_ORG_CODE" property="ownerOrgCode"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="DELETE_FLAG" property="deleteFlag"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+    </resultMap>
+
     <select id="selectIdByName" resultType="java.lang.Long">
         SELECT ID
         FROM bpm_scene

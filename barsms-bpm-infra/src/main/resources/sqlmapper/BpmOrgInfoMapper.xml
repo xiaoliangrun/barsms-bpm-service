@@ -2,14 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmOrgInfoMapper">
 
-    <select id="selectBranchList" resultType="com.cpic.barsms.bpm.infra.model.entity.BpmOrgInfo">
-        SELECT ID, ORG_CODE AS orgCode, ORG_NAME AS orgName, ORG_SNAME AS orgSname,
-               ORG_TYPE AS orgType, ORG_LEVEL AS orgLevel, ORG_STATUS AS orgStatus,
-               SUPER_ORG_CODE AS superOrgCode, HIERARCHY_CODE AS hierarchyCode,
-               REGION_CODE AS regionCode, REGION_NAME AS regionName,
-               CREATED_AT AS createTime, CREATED_BY AS createBy,
-               UPDATED_AT AS updateTime, UPDATED_BY AS updateBy,
-               IS_DELETED AS deleteFlag
+    <resultMap id="BpmOrgInfoResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmOrgInfo">
+        <id column="ID" property="id"/>
+        <result column="ORG_CODE" property="orgCode"/>
+        <result column="ORG_NAME" property="orgName"/>
+        <result column="ORG_SNAME" property="orgSname"/>
+        <result column="ORG_TYPE" property="orgType"/>
+        <result column="ORG_LEVEL" property="orgLevel"/>
+        <result column="ORG_STATUS" property="orgStatus"/>
+        <result column="SUPER_ORG_CODE" property="superOrgCode"/>
+        <result column="HIERARCHY_CODE" property="hierarchyCode"/>
+        <result column="REGION_CODE" property="regionCode"/>
+        <result column="REGION_NAME" property="regionName"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="IS_DELETED" property="deleteFlag"/>
+    </resultMap>
+
+    <select id="selectBranchList" resultMap="BpmOrgInfoResultMap">
+        SELECT ID, ORG_CODE, ORG_NAME, ORG_SNAME,
+               ORG_TYPE, ORG_LEVEL, ORG_STATUS,
+               SUPER_ORG_CODE, HIERARCHY_CODE,
+               REGION_CODE, REGION_NAME,
+               CREATED_AT, CREATED_BY,
+               UPDATED_AT, UPDATED_BY,
+               IS_DELETED
         FROM BPM_ORG_INFO
         WHERE ORG_LEVEL = '0002'
           AND IS_DELETED = '0'

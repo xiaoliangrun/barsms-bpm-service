@@ -2,8 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmDimCalendarMapper">
 
-    <select id="selectByDateRange" resultType="com.cpic.barsms.bpm.infra.model.entity.BpmDimCalendar">
-        SELECT cal_date AS calDate, month, day
+    <resultMap id="BpmDimCalendarResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmDimCalendar">
+        <result column="cal_date" property="calDate"/>
+        <result column="month" property="month"/>
+        <result column="day" property="day"/>
+    </resultMap>
+
+    <select id="selectByDateRange" resultMap="BpmDimCalendarResultMap">
+        SELECT cal_date, month, day
         FROM bpm_dim_calendar
         WHERE cal_date &gt;= #{startDate}
           AND cal_date &lt; #{endDateExclusive}

@@ -2,15 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceFormatMapper">
 
-    <select id="selectTemplates" resultType="com.cpic.barsms.bpm.infra.model.entity.BpmNodeInstanceFormat">
-        SELECT id, version_name AS versionName, node_code AS nodeCode, title, status, description,
-               org_level AS orgLevel, dept_name AS deptName, office_name AS officeName,
-               delivery_info AS deliveryInfo, sql5_text AS sql5Text, scene_name AS sceneName,
-               node_type_category AS nodeTypeCategory, node_type_name AS nodeTypeName,
-               due_date AS dueDate, planned_start AS plannedStart, planned_end AS plannedEnd,
-               data_org_level AS dataOrgLevel, channel,
-               created_by AS createBy, created_at AS createTime,
-               updated_by AS updateBy, updated_at AS updateTime, delete_flag AS deleteFlag, t_day
+    <resultMap id="BpmNodeInstanceFormatResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmNodeInstanceFormat">
+        <id column="id" property="id"/>
+        <result column="version_name" property="versionName"/>
+        <result column="node_code" property="nodeCode"/>
+        <result column="title" property="title"/>
+        <result column="status" property="status"/>
+        <result column="description" property="description"/>
+        <result column="org_level" property="orgLevel"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="office_name" property="officeName"/>
+        <result column="delivery_info" property="deliveryInfo"/>
+        <result column="sql5_text" property="sql5Text"/>
+        <result column="scene_name" property="sceneName"/>
+        <result column="node_type_category" property="nodeTypeCategory"/>
+        <result column="node_type_name" property="nodeTypeName"/>
+        <result column="due_date" property="dueDate"/>
+        <result column="planned_start" property="plannedStart"/>
+        <result column="planned_end" property="plannedEnd"/>
+        <result column="data_org_level" property="dataOrgLevel"/>
+        <result column="channel" property="channel"/>
+        <result column="t_day" property="tDay"/>
+        <result column="created_by" property="createBy"/>
+        <result column="created_at" property="createTime"/>
+        <result column="updated_by" property="updateBy"/>
+        <result column="updated_at" property="updateTime"/>
+        <result column="delete_flag" property="deleteFlag"/>
+    </resultMap>
+
+    <select id="selectTemplates" resultMap="BpmNodeInstanceFormatResultMap">
+        SELECT id, version_name, node_code, title, status, description,
+               org_level, dept_name, office_name,
+               delivery_info, sql5_text, scene_name,
+               node_type_category, node_type_name,
+               due_date, planned_start, planned_end,
+               data_org_level, channel,
+               created_by, created_at,
+               updated_by, updated_at, delete_flag, t_day
         FROM bpm_node_instance_format
         WHERE 1 = 1
           <if test="tDay != null">

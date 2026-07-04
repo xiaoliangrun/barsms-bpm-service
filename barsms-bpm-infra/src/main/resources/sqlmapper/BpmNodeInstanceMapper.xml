@@ -2,6 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceMapper">
 
+    <resultMap id="BpmNodeInstanceResultMap" type="com.cpic.barsms.bpm.infra.model.entity.BpmNodeInstance">
+        <id column="ID" property="id"/>
+        <result column="T_DAY" property="tDay"/>
+        <result column="SCENE_ID" property="sceneId"/>
+        <result column="NODE_TYPE_ID" property="nodeTypeId"/>
+        <result column="TITLE" property="title"/>
+        <result column="STATUS" property="status"/>
+        <result column="TIME_POINT" property="timePoint"/>
+        <result column="PRIORITY" property="priority"/>
+        <result column="PROGRESS" property="progress"/>
+        <result column="DUE_DATE" property="dueDate"/>
+        <result column="PLANNED_START" property="plannedStart"/>
+        <result column="PLANNED_END" property="plannedEnd"/>
+        <result column="CUSTOM_FIELD_SCHEME_ID" property="customFieldSchemeId"/>
+        <result column="FIELD_SCHEME_DATA" property="fieldSchemeData"/>
+        <result column="DESCRIPTION" property="description"/>
+        <result column="ORG_CODE" property="orgCode"/>
+        <result column="ORG_NAME" property="orgName"/>
+        <result column="ORG_BRANCH" property="orgBranch"/>
+        <result column="ORG_BRANCH_NAME" property="orgBranchName"/>
+        <result column="ORG_CEN_BRANCH" property="orgCenBranch"/>
+        <result column="ORG_CEN_BRANCH_NAME" property="orgCenBranchName"/>
+        <result column="ORG_BUSI_BRANCH" property="orgBusiBranch"/>
+        <result column="ORG_BUSI_BRANCH_NAME" property="orgBusiBranchName"/>
+        <result column="CHANNEL" property="channel"/>
+        <result column="NODE_CODE" property="nodeCode"/>
+        <result column="DATA_ORG_LEVEL" property="dataOrgLevel"/>
+        <result column="REFERENCE_NODE_ID" property="referenceNodeId"/>
+        <result column="CREATED_BY" property="createBy"/>
+        <result column="CREATED_AT" property="createTime"/>
+        <result column="UPDATED_BY" property="updateBy"/>
+        <result column="UPDATED_AT" property="updateTime"/>
+        <result column="DELETE_FLAG" property="deleteFlag"/>
+    </resultMap>
+
     <insert id="batchInsert">
         INSERT INTO bpm_node_instance (
             T_DAY, SCENE_ID, NODE_TYPE_ID, TITLE, STATUS, TIME_POINT, PRIORITY,
