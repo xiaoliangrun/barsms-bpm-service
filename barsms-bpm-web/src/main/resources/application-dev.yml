@@ -47,7 +47,6 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:/sqlmapper/*.xml
   type-aliases-package: com.cpic.barsms.bpm.infra.model.entity
-  type-enums-package: com.cpic.barsms.bpm.common.enums
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
