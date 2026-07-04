@@ -21,4 +21,5 @@ public class BatchGenerateRequest {
 
     /** 基准日期（格式：yyyy-MM-dd，如：2026-06-01），空则默认下月第一天 */
     private String tDay;
+
 }
