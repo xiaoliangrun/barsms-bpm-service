@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceFormatMapper">
+
+    <select id="selectTemplates" resultType="com.cpic.barsms.bpm.infra.model.entity.BpmNodeInstanceFormat">
+        SELECT id, version_name AS versionName, node_code AS nodeCode, title, status, description,
+               org_level AS orgLevel, dept_name AS deptName, office_name AS officeName,
+               delivery_info AS deliveryInfo, sql5_text AS sql5Text, scene_name AS sceneName,
+               node_type_category AS nodeTypeCategory, node_type_name AS nodeTypeName,
+               due_date AS dueDate, planned_start AS plannedStart, planned_end AS plannedEnd,
+               data_org_level AS dataOrgLevel, channel,
+               created_by AS createBy, created_at AS createTime,
+               updated_by AS updateBy, updated_at AS updateTime, delete_flag AS deleteFlag, t_day
+        FROM bpm_node_instance_format
+        WHERE 1 = 1
+          <if test="tDay != null">
+              AND t_day = #{tDay}
+          </if>
+          <if test="versionName != null and versionName != ''">
+              AND version_name = #{versionName}
+          </if>
+          <if test="procDateType != null">
+              AND sql5_text = #{procDateType.code}
+          </if>
+          <if test="orgLevelLike != null and orgLevelLike != ''">
+              AND org_level LIKE #{orgLevelLike}
+          </if>
+          <if test="nodeCodePrefix != null and nodeCodePrefix != ''">
+              AND node_code LIKE CONCAT(#{nodeCodePrefix}, '%')
+          </if>
+          AND delete_flag = '0'
+    </select>
+
+</mapper>

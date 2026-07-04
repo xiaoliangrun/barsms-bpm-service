@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceMapper">
+
+    <insert id="batchInsert">
+        INSERT INTO bpm_node_instance (
+            T_DAY, SCENE_ID, NODE_TYPE_ID, TITLE, STATUS, TIME_POINT, PRIORITY,
+            progress, DUE_DATE, PLANNED_START, PLANNED_END, CUSTOM_FIELD_SCHEME_ID,
+            FIELD_SCHEME_DATA, DESCRIPTION, Org_code, org_name, ORG_BRANCH,
+            ORG_BRANCH_NAME, ORG_CEN_BRANCH, ORG_CEN_BRANCH_NAME, ORG_BUSI_BRANCH,
+            ORG_BUSI_BRANCH_NAME, CREATED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT,
+            channel, node_code, data_org_level
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.tDay}, #{item.sceneId}, #{item.nodeTypeId}, #{item.title},
+                #{item.status}, #{item.timePoint}, #{item.priority}, #{item.progress},
+                #{item.dueDate}, #{item.plannedStart}, #{item.plannedEnd},
+                #{item.customFieldSchemeId}, #{item.fieldSchemeData}, #{item.description},
+                #{item.orgCode}, #{item.orgName}, #{item.orgBranch}, #{item.orgBranchName},
+                #{item.orgCenBranch}, #{item.orgCenBranchName}, #{item.orgBusiBranch},
+                #{item.orgBusiBranchName}, #{item.createBy}, #{item.createTime},
+                #{item.updateBy}, #{item.updateTime}, #{item.channel},
+                #{item.nodeCode}, #{item.dataOrgLevel}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteByTargetMonth">
+        DELETE FROM bpm_node_instance
+        WHERE T_DAY = #{tDay}
+          AND SCENE_ID = #{sceneId}
+          <if test="nodeCodePrefix != null and nodeCodePrefix != ''">
+              AND node_code LIKE CONCAT(#{nodeCodePrefix}, '%')
+          </if>
+          <if test="nodeCodePrefix == null or nodeCodePrefix == ''">
+              AND 1 = 1
+          </if>
+    </delete>
+
+    <update id="updateReadOnlyStatus">
+        UPDATE bpm_node_instance t1
+        SET status = 'READ_ONLY'
+        WHERE t1.T_DAY = #{tDay}
+          AND t1.SCENE_ID = #{sceneId}
+          AND IFNULL(t1.ORG_BUSI_BRANCH, '@') = '@'
+          AND t1.NODE_TYPE_ID IN
+          <foreach collection="readonlyTypeIds" item="id" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+          <if test="nodeCodePrefix != null and nodeCodePrefix != ''">
+              AND t1.node_code LIKE CONCAT(#{nodeCodePrefix}, '%')
+          </if>
+          AND t1.id NOT IN (
+              SELECT node_instance_id FROM bpm_node_instance_office
+              WHERE delete_flag = '0'
+          )
+    </update>
+
+    <update id="updateBranchReference">
+        UPDATE bpm_node_instance t1
+        SET reference_node_id = (
+            SELECT t_s.id FROM bpm_node_instance t_s
+            WHERE t_s.title = t1.title
+              AND CONCAT(t1.description, '+') = CONCAT(t_s.description, '+')
+              AND t_s.ORG_BRANCH = 'ALL'
+              AND t_s.T_DAY = #{tDay}
+              AND t_s.SCENE_ID = #{sceneId}
+            LIMIT 1
+        )
+        WHERE t1.T_DAY = #{tDay}
+          AND t1.SCENE_ID = #{sceneId}
+          AND t1.status = 'READ_ONLY'
+          AND t1.ORG_CEN_BRANCH = 'ALL'
+          AND t1.ORG_BRANCH != 'ALL'
+          AND t1.NODE_TYPE_ID IN (
+              SELECT id FROM bpm_node_type WHERE type_key = 'READONLY'
+          )
+          <if test="nodeCodePrefix != null and nodeCodePrefix != ''">
+              AND t1.node_code LIKE CONCAT(#{nodeCodePrefix}, '%')
+          </if>
+    </update>
+
+    <update id="updateCenterReference">
+        UPDATE bpm_node_instance t1
+        SET reference_node_id = (
+            SELECT t_s.id FROM bpm_node_instance t_s
+            WHERE t_s.title = t1.title
+              AND CONCAT(t1.description, '+') = CONCAT(t_s.description, '+')
+              AND t_s.ORG_BRANCH = t1.ORG_BRANCH
+              AND t_s.ORG_CEN_BRANCH = 'ALL'
+              AND t_s.T_DAY = #{tDay}
+              AND t_s.SCENE_ID = #{sceneId}
+            LIMIT 1
+        )
+        WHERE t1.T_DAY = #{tDay}
+          AND t1.SCENE_ID = #{sceneId}
+          AND t1.status = 'READ_ONLY'
+          AND t1.ORG_BUSI_BRANCH = 'ALL'
+          AND t1.ORG_CEN_BRANCH != 'ALL'
+          AND t1.NODE_TYPE_ID IN (
+              SELECT id FROM bpm_node_type WHERE type_key = 'READONLY'
+          )
+          <if test="nodeCodePrefix != null and nodeCodePrefix != ''">
+              AND t1.node_code LIKE CONCAT(#{nodeCodePrefix}, '%')
+          </if>
+    </update>
+
+    <update id="updateSubReference">
+        UPDATE bpm_node_instance t1
+        SET reference_node_id = (
+            SELECT t_s.id FROM bpm_node_instance t_s
+            WHERE t_s.title = t1.title
+              AND CONCAT(t1.description, '+') = CONCAT(t_s.description, '+')
+              AND t_s.ORG_BRANCH = t1.ORG_BRANCH
+              AND t_s.ORG_CEN_BRANCH = t1.ORG_CEN_BRANCH
+              AND t_s.ORG_BUSI_BRANCH = 'ALL'
+              AND t_s.T_DAY = #{tDay}
+              AND t_s.SCENE_ID = #{sceneId}
+            LIMIT 1
+        )
+        WHERE t1.T_DAY = #{tDay}
+          AND t1.SCENE_ID = #{sceneId}
+          AND t1.status = 'READ_ONLY'
+          AND t1.ORG_BUSI_BRANCH != 'ALL'
+          AND t1.NODE_TYPE_ID IN (
+              SELECT id FROM bpm_node_type WHERE type_key = 'READONLY'
+          )
+          <if test="nodeCodePrefix != null and nodeCodePrefix != ''">
+              AND t1.node_code LIKE CONCAT(#{nodeCodePrefix}, '%')
+          </if>
+    </update>
+
+</mapper>

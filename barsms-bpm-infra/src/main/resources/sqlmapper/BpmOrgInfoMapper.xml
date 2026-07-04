@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmOrgInfoMapper">
+
+    <select id="selectBranchList" resultType="com.cpic.barsms.bpm.infra.model.entity.BpmOrgInfo">
+        SELECT ID, ORG_CODE AS orgCode, ORG_NAME AS orgName, ORG_SNAME AS orgSname,
+               ORG_TYPE AS orgType, ORG_LEVEL AS orgLevel, ORG_STATUS AS orgStatus,
+               SUPER_ORG_CODE AS superOrgCode, HIERARCHY_CODE AS hierarchyCode,
+               REGION_CODE AS regionCode, REGION_NAME AS regionName,
+               CREATED_AT AS createTime, CREATED_BY AS createBy,
+               UPDATED_AT AS updateTime, UPDATED_BY AS updateBy,
+               IS_DELETED AS deleteFlag
+        FROM BPM_ORG_INFO
+        WHERE ORG_LEVEL = '0002'
+          AND IS_DELETED = '0'
+        ORDER BY ORG_CODE
+    </select>
+
+    <select id="selectCenterWithBranch" resultType="com.cpic.barsms.bpm.infra.dto.OrgRelationDTO">
+        SELECT t2.ORG_CODE AS branch_code, t2.ORG_NAME AS branch_name,
+               t1.ORG_CODE AS center_code, t1.ORG_NAME AS center_name
+        FROM BPM_ORG_INFO t1
+        INNER JOIN BPM_ORG_INFO t2 ON t1.SUPER_ORG_CODE = t2.ORG_CODE
+        WHERE t1.ORG_LEVEL = '0003'
+          AND t1.IS_DELETED = '0'
+          AND t2.IS_DELETED = '0'
+          AND t1.ORG_CODE NOT IN (
+              SELECT org_code FROM BPM_ORG_INFO t
+              WHERE t.ORG_LEVEL = '0003'
+                AND (t.ORG_NAME LIKE '%虚拟%' OR t.ORG_NAME LIKE '%营业部%')
+                AND t.SUPER_ORG_CODE IN
+                <foreach collection="excludeCodes" item="code" open="(" separator="," close=")">
+                    #{code}
+                </foreach>
+          )
+        ORDER BY t1.ORG_CODE
+    </select>
+
+    <select id="selectSubWithCenterAndBranch" resultType="com.cpic.barsms.bpm.infra.dto.OrgRelationDTO">
+        SELECT t3.ORG_CODE AS branch_code, t3.ORG_NAME AS branch_name,
+               t2.ORG_CODE AS center_code, t2.ORG_NAME AS center_name,
+               t1.ORG_CODE AS sub_code, t1.ORG_NAME AS sub_name
+        FROM BPM_ORG_INFO t1
+        INNER JOIN BPM_ORG_INFO t2 ON t1.SUPER_ORG_CODE = t2.ORG_CODE
+        INNER JOIN BPM_ORG_INFO t3 ON t2.SUPER_ORG_CODE = t3.ORG_CODE
+        WHERE t1.ORG_LEVEL = '0004'
+          AND t1.IS_DELETED = '0'
+          AND t2.IS_DELETED = '0'
+          AND t3.IS_DELETED = '0'
+          AND t1.ORG_NAME NOT LIKE '%营业部%'
+          AND t1.ORG_NAME NOT LIKE '%营销%'
+        ORDER BY t1.ORG_CODE
+    </select>
+
+</mapper>

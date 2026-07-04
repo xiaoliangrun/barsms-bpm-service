@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmDimCalendarMapper">
+
+    <select id="selectByDateRange" resultType="com.cpic.barsms.bpm.infra.model.entity.BpmDimCalendar">
+        SELECT cal_date AS calDate, month, day
+        FROM bpm_dim_calendar
+        WHERE cal_date &gt;= #{startDate}
+          AND cal_date &lt; #{endDateExclusive}
+        ORDER BY cal_date
+    </select>
+
+</mapper>

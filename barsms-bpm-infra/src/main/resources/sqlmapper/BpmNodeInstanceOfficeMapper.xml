@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceOfficeMapper">
+
+    <delete id="deleteByInstanceIds">
+        DELETE FROM bpm_node_instance_office
+        WHERE node_instance_id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsert">
+        INSERT INTO bpm_node_instance_office (
+            node_instance_id, office_code, office_name, dept_code, dept_name,
+            created_by, created_at, updated_by, updated_at, delete_flag
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.nodeInstanceId}, #{item.officeCode}, #{item.officeName},
+                #{item.deptCode}, #{item.deptName},
+                #{item.createBy}, #{item.createTime},
+                #{item.updateBy}, #{item.updateTime}, #{item.deleteFlag}
+            )
+        </foreach>
+    </insert>
+
+    <update id="markUnmatchedDeleted">
+        UPDATE bpm_node_instance_office
+        SET delete_flag = '1'
+        WHERE node_instance_id IN
+        <foreach collection="instanceIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND (office_code IS NULL OR office_code = '')
+        AND (dept_code IS NULL OR dept_code = '')
+    </update>
+
+</mapper>

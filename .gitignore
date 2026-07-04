@@ -1,0 +1,28 @@
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Build output
+target/
+
+# Documentation
+doc/
+mddoc/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Compiled class files
+*.class
