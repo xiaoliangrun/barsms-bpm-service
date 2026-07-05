@@ -1,9 +1,10 @@
 package com.cpic.barsms.bpm.domain.serviceimpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpic.barsms.bpm.common.enums.OrgLevelEnum;
 import com.cpic.barsms.bpm.common.utils.StringSplitter;
-import com.cpic.barsms.bpm.domain.service.DeliverableService;
+import com.cpic.barsms.bpm.domain.service.BpmDeliverableService;
 import com.cpic.barsms.bpm.infra.mapper.BpmDeliverableMapper;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceFormatMapper;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceMapper;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class DeliverableServiceImpl implements DeliverableService {
+public class BpmDeliverableServiceImpl extends ServiceImpl<BpmDeliverableMapper, BpmDeliverable> implements BpmDeliverableService {
 
     @Autowired
     private BpmNodeInstanceMapper bpmNodeInstanceMapper;

@@ -1,6 +1,7 @@
 package com.cpic.barsms.bpm.domain.serviceimpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpic.barsms.bpm.common.enums.OrgLevelEnum;
 import com.cpic.barsms.bpm.common.utils.StringSplitter;
 import com.cpic.barsms.bpm.domain.service.OfficeMappingService;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class OfficeMappingServiceImpl implements OfficeMappingService {
+public class OfficeMappingServiceImpl extends ServiceImpl<BpmNodeInstanceOfficeMapper, BpmNodeInstanceOffice> implements OfficeMappingService {
 
     @Autowired
     private BpmNodeInstanceMapper bpmNodeInstanceMapper;

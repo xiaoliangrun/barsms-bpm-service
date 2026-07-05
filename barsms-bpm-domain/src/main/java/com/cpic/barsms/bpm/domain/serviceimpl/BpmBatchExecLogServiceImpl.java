@@ -1,5 +1,6 @@
 package com.cpic.barsms.bpm.domain.serviceimpl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpic.barsms.bpm.common.enums.BatchStepEnum;
 import com.cpic.barsms.bpm.domain.service.BpmBatchExecLogService;
 import com.cpic.barsms.bpm.infra.mapper.BpmBatchExecLogMapper;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-public class BpmBatchExecLogServiceImpl implements BpmBatchExecLogService {
+public class BpmBatchExecLogServiceImpl extends ServiceImpl<BpmBatchExecLogMapper, BpmBatchExecLog> implements BpmBatchExecLogService {
 
     @Autowired
     private BpmBatchExecLogMapper bpmBatchExecLogMapper;

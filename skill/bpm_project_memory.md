@@ -80,6 +80,44 @@ private BpmNodeInstanceMapper bpmNodeInstanceMapper;
 - MyBatis 参数：`@Param("xxx")` 逐一标注
 - 校验：`@NotBlank(message = "xxx不能为空")` 等 JSR-303 注解
 
+### Service 层 MyBatis-Plus 规范
+
+**只有与数据库表直接映射的 Service** 才继承 MyBatis-Plus 的 `IService` 和 `ServiceImpl`，以获得通用 CRUD 能力。业务编排类 Service（如任务生成、引用节点更新等）即使注入了 Mapper，也不需要继承。
+
+- **判断标准**：Service 接口命名是否与数据库表名对齐
+  - 对齐（如 `BpmSceneService` → `bpm_scene` 表）：**必须**继承 `IService` / `ServiceImpl`
+  - 不对齐（如 `DailyTaskGeneratorService`、`MonthlyTaskGeneratorSevice`、`BatchGenerateService`）：**不继承**
+- **Service 接口**：`extends IService<实体类>`
+  - import: `com.baomidou.mybatisplus.extension.service.IService`
+- **Service 实现**：`extends ServiceImpl<对应Mapper, 实体类> implements XxxService`
+  - import: `com.baomidou.mybatisplus.extension.service.impl.ServiceImpl`
+- **命名对齐规则**：Service 接口和 ServiceImpl 的命名必须与数据库表一一对应
+  - 表 `bpm_scene` → `BpmSceneService` / `BpmSceneServiceImpl`
+  - 表 `bpm_batch_exec_log` → `BpmBatchExecLogService` / `BpmBatchExecLogServiceImpl`
+  - 表 `bpm_node_instance` → `BpmNodeInstanceService` / `BpmNodeInstanceServiceImpl`
+
+参照：`BpmSceneService`（接口）和 `BpmSceneServiceImpl`（实现）
+
+```java
+// Service 接口（与表对齐）
+public interface BpmSceneService extends IService<BpmScene> {
+    Long selectIdByName(String sceneName);
+}
+
+// Service 实现（与表对齐）
+@Slf4j
+@Service
+public class BpmSceneServiceImpl extends ServiceImpl<BpmSceneMapper, BpmScene> implements BpmSceneService {
+    @Autowired
+    private BpmSceneMapper bpmSceneMapper;
+}
+
+// 业务编排类 Service（不与表对齐，不继承）
+public interface DailyTaskGeneratorService {
+    void generate(Date tDay, Date tDayBase, String versionName, Long sceneId, String nodeCodePrefix);
+}
+```
+
 ---
 
 ## 三、命名规范
@@ -369,3 +407,4 @@ mybatis-plus:
 7. **通用 Bean**：`@Component` 标注以启用 Spring 自动检测（如 `RedisDistributedLock`）
 8. **SQL LIKE 模式**：必须使用枚举拼接，不硬编码中文字符串
 9. **任务周期/机构层级**：必须通过枚举管理（`ProcDateTypeEnum`、`OrgLevelEnum`）
+10. **Service 层继承**：只有与数据库表命名对齐的 Service 接口才 `extends IService<实体>`，实现类 `extends ServiceImpl<对应Mapper, 实体>`；业务编排类 Service（如 `DailyTaskGeneratorService`、`MonthlyTaskGeneratorSevice`、`BatchGenerateService`）不继承。Service 接口和 ServiceImpl 命名必须与数据库表一一对应
