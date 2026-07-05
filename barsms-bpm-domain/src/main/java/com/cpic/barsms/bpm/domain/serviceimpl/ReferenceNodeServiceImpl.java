@@ -1,8 +1,10 @@
 package com.cpic.barsms.bpm.domain.serviceimpl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpic.barsms.bpm.domain.service.ReferenceNodeService;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceMapper;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeTypeMapper;
+import com.cpic.barsms.bpm.infra.model.entity.BpmNodeInstance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ReferenceNodeServiceImpl implements ReferenceNodeService {
+public class ReferenceNodeServiceImpl extends ServiceImpl<BpmNodeInstanceMapper, BpmNodeInstance> implements ReferenceNodeService {
 
     @Autowired
     private BpmNodeInstanceMapper bpmNodeInstanceMapper;

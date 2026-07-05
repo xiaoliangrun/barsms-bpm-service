@@ -1,6 +1,7 @@
 package com.cpic.barsms.bpm.domain.serviceimpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cpic.barsms.bpm.domain.service.BpmNodeInstanceService;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceMapper;
 import com.cpic.barsms.bpm.infra.model.entity.BpmNodeInstance;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-public class BpmNodeInstanceServiceImpl implements BpmNodeInstanceService {
+public class BpmNodeInstanceServiceImpl extends ServiceImpl<BpmNodeInstanceMapper, BpmNodeInstance> implements BpmNodeInstanceService {
 
     @Autowired
     private BpmNodeInstanceMapper bpmNodeInstanceMapper;

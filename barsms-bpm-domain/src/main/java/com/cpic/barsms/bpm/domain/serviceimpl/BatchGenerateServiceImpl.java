@@ -11,7 +11,7 @@ import com.cpic.barsms.bpm.domain.service.BpmBatchExecLogService;
 import com.cpic.barsms.bpm.domain.service.BpmNodeInstanceService;
 import com.cpic.barsms.bpm.domain.service.BpmSceneService;
 import com.cpic.barsms.bpm.domain.service.DailyTaskGeneratorService;
-import com.cpic.barsms.bpm.domain.service.DeliverableService;
+import com.cpic.barsms.bpm.domain.service.BpmDeliverableService;
 import com.cpic.barsms.bpm.domain.service.MonthlyTaskGeneratorSevice;
 import com.cpic.barsms.bpm.domain.service.OfficeMappingService;
 import com.cpic.barsms.bpm.domain.service.ReferenceNodeService;
@@ -35,7 +35,7 @@ public class BatchGenerateServiceImpl implements BatchGenerateService {
     @Autowired
     private ReferenceNodeService referenceNodeService;
     @Autowired
-    private DeliverableService deliverableService;
+    private BpmDeliverableService bpmDeliverableService;
     @Autowired
     private BpmSceneService bpmSceneService;
     @Autowired
@@ -129,7 +129,7 @@ public class BatchGenerateServiceImpl implements BatchGenerateService {
             referenceNodeService.updateReferenceNodes(tDay, sceneId, nodeCodePrefix);
 
             bpmBatchExecLogService.updateStep(logId, BatchStepEnum.GENERATE_DELIVERABLE);
-            deliverableCount = deliverableService.generate(tDay, tDayBase, versionName, sceneId, nodeCodePrefix);
+            deliverableCount = bpmDeliverableService.generate(tDay, tDayBase, versionName, sceneId, nodeCodePrefix);
 
             bpmBatchExecLogService.markSuccess(logId, instanceCount, officeCount, deliverableCount);
 
