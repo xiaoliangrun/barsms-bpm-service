@@ -27,6 +27,7 @@ public class BatchGenerateController {
                 batchGenerateRequest.getVersionName(), batchGenerateRequest.getNodeCode(),
                 batchGenerateRequest.getTDay());
         BatchGenerateResultDTO batchGenerateResultDTO = batchGenerateService.generate(batchGenerateRequest);
+
         return ApiResult.ok(batchGenerateResultDTO);
     }
 }
