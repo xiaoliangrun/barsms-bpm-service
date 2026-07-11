@@ -1,9 +1,10 @@
 package com.cpic.barsms.bpm.domain.serviceimpl;
 
+import com.cpic.barsms.bpm.common.constants.BatchConstants;
 import com.cpic.barsms.bpm.common.constants.BatchProperties;
 import com.cpic.barsms.bpm.common.enums.OrgLevelEnum;
 import com.cpic.barsms.bpm.common.enums.ProcDateTypeEnum;
-import com.cpic.barsms.bpm.domain.service.MonthlyTaskGeneratorSevice;
+import com.cpic.barsms.bpm.domain.service.MonthlyTaskGeneratorService;
 import com.cpic.barsms.bpm.infra.dto.OrgRelationDTO;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceFormatMapper;
 import com.cpic.barsms.bpm.infra.mapper.BpmNodeInstanceMapper;
@@ -22,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class MonthlyTaskGeneratorSeviceImpl implements MonthlyTaskGeneratorSevice {
+public class MonthlyTaskGeneratorServiceImpl implements MonthlyTaskGeneratorService {
 
     @Autowired
     private BpmNodeInstanceMapper bpmNodeInstanceMapper;
@@ -139,27 +140,27 @@ public class MonthlyTaskGeneratorSeviceImpl implements MonthlyTaskGeneratorSevic
         instance.setTitle(template.getTitle());
         instance.setStatus(template.getStatus());
         instance.setTimePoint(null);
-        instance.setPriority("高");
-        instance.setProgress(0);
+        instance.setPriority(batchProperties.getDefaultPriority());
+        instance.setProgress(BatchConstants.DEFAULT_PROGRESS);
         instance.setDueDate(template.getDueDate());
         instance.setPlannedStart(template.getPlannedStart());
         instance.setPlannedEnd(template.getPlannedEnd());
-        instance.setCustomFieldSchemeId(1L);
+        instance.setCustomFieldSchemeId(Long.parseLong(batchProperties.getDefaultCustomFieldSchemeId()));
         instance.setFieldSchemeData(null);
         instance.setDescription(template.getDescription());
         instance.setOrgCode(batchProperties.getHeadOfficeCode());
         instance.setOrgName(batchProperties.getHeadOfficeName());
-        instance.setOrgBranch(branchCode != null ? branchCode : "ALL");
+        instance.setOrgBranch(branchCode != null ? branchCode : BatchConstants.ORG_ALL);
         instance.setOrgBranchName(branchName);
-        instance.setOrgCenBranch(centerCode != null ? centerCode : "ALL");
+        instance.setOrgCenBranch(centerCode != null ? centerCode : BatchConstants.ORG_ALL);
         instance.setOrgCenBranchName(centerName);
-        instance.setOrgBusiBranch(subCode != null ? subCode : "ALL");
+        instance.setOrgBusiBranch(subCode != null ? subCode : BatchConstants.ORG_ALL);
         instance.setOrgBusiBranchName(subName);
         instance.setCreateBy(template.getCreateBy());
         instance.setCreateTime(new Date());
         instance.setUpdateBy(template.getUpdateBy());
         instance.setUpdateTime(new Date());
-        instance.setChannel("PAA");
+        instance.setChannel(batchProperties.getDefaultChannel());
         instance.setNodeCode(template.getNodeCode());
         instance.setDataOrgLevel(OrgLevelEnum.toShortName(template.getDataOrgLevel()));
         return instance;

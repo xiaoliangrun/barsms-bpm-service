@@ -2,6 +2,7 @@ package com.cpic.barsms.bpm.domain.serviceimpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cpic.barsms.bpm.common.constants.BatchConstants;
 import com.cpic.barsms.bpm.common.enums.OrgLevelEnum;
 import com.cpic.barsms.bpm.common.utils.StringSplitter;
 import com.cpic.barsms.bpm.domain.service.OfficeMappingService;
@@ -90,10 +91,10 @@ public class OfficeMappingServiceImpl extends ServiceImpl<BpmNodeInstanceOfficeM
                 office.setOfficeName(officeName);
                 office.setDeptCode(deptCode);
                 office.setDeptName(deptName);
-                office.setCreateBy("ADM");
+                office.setCreateBy(BatchConstants.CREATE_BY_ADM);
                 office.setCreateTime(new Date());
                 office.setUpdateTime(new Date());
-                office.setDeleteFlag("0");
+                office.setDeleteFlag(BatchConstants.DELETE_FLAG_NORMAL);
                 officeList.add(office);
             }
         }
@@ -136,16 +137,16 @@ public class OfficeMappingServiceImpl extends ServiceImpl<BpmNodeInstanceOfficeM
     }
 
     private String resolveOrgLevel(BpmNodeInstance instance) {
-        if ("ALL".equals(instance.getOrgBranch())) return "总公司";
-        if ("ALL".equals(instance.getOrgCenBranch())) return "分公司";
-        if ("ALL".equals(instance.getOrgBusiBranch())) return "中支";
-        return "支公司";
+        if (BatchConstants.ORG_ALL.equals(instance.getOrgBranch())) return OrgLevelEnum.ROOT_COMPANY.getFullName();
+        if (BatchConstants.ORG_ALL.equals(instance.getOrgCenBranch())) return OrgLevelEnum.BRANCH_COMPANY.getFullName();
+        if (BatchConstants.ORG_ALL.equals(instance.getOrgBusiBranch())) return OrgLevelEnum.CENTER_BRANCH_COMPANY.getFullName();
+        return OrgLevelEnum.SUB_BRANCH_COMPANY.getFullName();
     }
 
     private int getLevelIndex(String shortName) {
-        if ("总".equals(shortName)) return 0;
-        if ("分".equals(shortName)) return 1;
-        if ("中".equals(shortName)) return 2;
+        if (OrgLevelEnum.ROOT_COMPANY.getShortName().equals(shortName)) return 0;
+        if (OrgLevelEnum.BRANCH_COMPANY.getShortName().equals(shortName)) return 1;
+        if (OrgLevelEnum.CENTER_BRANCH_COMPANY.getShortName().equals(shortName)) return 2;
         return 3;
     }
 
