@@ -33,4 +33,5 @@ public final class BatchConstants {
     public static final String LOG_STATUS_RUNNING = "RUNNING";
     public static final String LOG_STATUS_SUCCESS = "SUCCESS";
     public static final String LOG_STATUS_FAILED = "FAILED";
+
 }
